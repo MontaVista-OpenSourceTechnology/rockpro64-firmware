@@ -1,0 +1,6 @@
+[submodule "atf"]
+	path = atf
+	url = https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+[submodule "u-boot"]
+	path = u-boot
+	url = https://gitlab.denx.de/u-boot/u-boot.git
