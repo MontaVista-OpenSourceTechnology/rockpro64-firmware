@@ -2,7 +2,10 @@
 
 This repository builds firmware for a RockPro 64.
 
-To build it, check out this repository and "cd" do it.  Then do:
+To build it, you will need to install an aarch64 compiler, probably in
+a package named "gcc-aarch64-linux-gnu". Then check out this repository
+and "cd" do it.  Then do:
+
 ```
 git submodule init
 git submodule update
