@@ -84,16 +84,21 @@ u-boot-clean:
 BIN_DIR = $(ROOT)/bin
 TPLSPL = $(U-BOOT_BUILD)/tpl/u-boot-tpl.bin:$(U-BOOT_BUILD)/spl/u-boot-spl.bin
 
-# u-boot SPI offset is set to 0x60000 in the rockpro64 dtb file.
+# u-boot SPI offset is set to 0x60000 (384K) in the rockpro64 dtb
+# file.  The process below puts the TPL and SPL images into a mkimage,
+# pads it out to 384K bytes so u-boot.itb is in the right place, then
+# appends u-boot.itb.
+#
+# The rk3399 will boot TPL, which will set up DRAM, then SPL, which
+# will then boot u-boot.
 binaries: u-boot
 	if test ! -e $(BIN_DIR); then mkdir $(BIN_DIR); fi
 	cp $(U-BOOT_BUILD)/idbloader.img $(U-BOOT_BUILD)/u-boot.itb $(BIN_DIR)
 	$(U-BOOT_BUILD)/tools/mkimage -n rk3399 -T rkspi \
 		-d $(TPLSPL) $(BIN_DIR)/u-boot-spi.tmp1 && \
-	   dd if=$(BIN_DIR)/u-boot-spi.tmp1 of=$(BIN_DIR)/u-boot-spi.tmp2 \
+	   dd if=$(BIN_DIR)/u-boot-spi.tmp1 of=$(BIN_DIR)/u-boot-spi.img \
 		bs=384K conv=sync && \
-	   cat $(BIN_DIR)/u-boot-spi.tmp2 $(U-BOOT_BUILD)/u-boot.itb \
-		>$(BIN_DIR)/u-boot-spi.img
+	   cat $(U-BOOT_BUILD)/u-boot.itb >>$(BIN_DIR)/u-boot-spi.img
 	@echo
 	@echo "******************************************************"
 	@echo "To install on an SD card, do:"
@@ -101,8 +106,17 @@ binaries: u-boot
 	@echo "  sudo dd if=bin/u-boot.itb of=/dev/mmcblkX seek=16384"
 	@echo "  sync"
 	@echo "to an mmc card, replacing X with your specific card."
-	@echo "For spi, "
-	@echo "  sf update 0x800800 0 0x400000"
+	@echo
+	@echo "For spi, you will need to boot u-boot on the card somehow"
+	@echo "then load u-boot-spi.img into memory somehow and"
+	@echo "write it to SPI.  Something like:"
+	@echo "  dhcp"
+	@echo "  tftp 0x2000000 u-boot-spi.img"
+	@echo "  sf probe"
+	@echo "  sf update 0x2000000 0 <size>"
+	@echo "where <size> is the size (in hex) reported by the download."
+	@echo "You can also write it to /dev/mtd<n> on Linux."
+	@echo
 
 bin-clean:
 	rm -rf bin
