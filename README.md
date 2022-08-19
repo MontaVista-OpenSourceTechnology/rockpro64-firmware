@@ -25,7 +25,7 @@ files:
 The makefile will spit out instruction on how to burn it at the end of
 the run.
 
-# Installing
+## Installing
 
 The rk3399 boots from SPI first, so if you have valid firmware in the
 SPI, it will not boot anything else.
@@ -54,7 +54,7 @@ like:
 where <size> is the size (in hex) reported by the download.  You can
 also "dd" it to /dev/mtd0 on Linux.
 
-# Bypassing SPI boot
+## Bypassing SPI boot
 
 If your SPI gets messed up or the boot process fails for some reason,
 do not despair!  Power off the board, then get a jumper and short pins
@@ -71,3 +71,15 @@ sf erase 0 4000
 ```
 
 or in Linux you can use "dd" to copy /dev/zero into /dev/mtd0.
+
+## Useful Resources
+
+I pulled information from all over the place, including:
+
+https://stikonas.eu/wordpress/2019/09/15/blobless-boot-with-rockpro64/
+
+https://gitlab.arm.com/systemready/firmware-build/rk3399-manifest
+
+https://opensource.rock-chips.com/wiki_RK3399
+
+https://opensource.rock-chips.com/images/e/ee/Rockchip_RK3399TRM_V1.4_Part1-20170408.pdf
