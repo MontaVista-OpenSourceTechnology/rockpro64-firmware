@@ -83,3 +83,7 @@ https://gitlab.arm.com/systemready/firmware-build/rk3399-manifest
 https://opensource.rock-chips.com/wiki_RK3399
 
 https://opensource.rock-chips.com/images/e/ee/Rockchip_RK3399TRM_V1.4_Part1-20170408.pdf
+
+https://opensource.rock-chips.com/wiki_Boot_option
+
+https://blog.3mdeb.com/2021/2021-12-03-rockchip-secure-boot/

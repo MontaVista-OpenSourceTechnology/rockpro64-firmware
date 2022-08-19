@@ -4,3 +4,6 @@
 [submodule "u-boot"]
 	path = u-boot
 	url = https://gitlab.denx.de/u-boot/u-boot.git
+[submodule "rkbin"]
+	path = rkbin
+	url = https://github.com/rockchip-linux/rkbin.git
