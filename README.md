@@ -28,10 +28,12 @@ the run.
 
 ## Installing
 
-The rk3399 boots from SPI first, so if you have valid firmware in the
-SPI, it will not boot anything else.
+The rk3399 boots from SPI first, followed by eMMC, followed by the SD
+card.  So if you have valid firmware in the SPI, it will not boot
+anything else.  Else if you have firmware in eMMC, it will not boot
+from SD.
 
-To install on an SD card, do:
+To install on an SD card or eMMC on a host system, do:
 
 ```
   sudo dd if=bin/idbloader.img of=/dev/mmcblkX seek=64
@@ -39,7 +41,31 @@ To install on an SD card, do:
   sync
 ```
 
-to an SD device, replacing X with your specific card.
+to an SD device, replacing X with your specific card.  Note that if
+you use an adapter the device may appear as /dev/sdX on your host
+system.  Also, this is the same when running Linux on the RockPine64.
+On Linux on the RockPine64, /dev/mmcblk0 is the eMMC device and
+/dev/mmcblk1 is the SD card.
+
+You can also do this on the RockPin64 running u-boot.  The eMMC is mmc
+dev 0, the SD card is mmc dev 1.  To write the firmware to the one of
+these, do:
+
+```
+  mmc dev <n>
+  mmc info  (verify that Rd Block Len is 512)
+  dhcp
+  tftp 0x2000000 idbloader.img
+  (Calculate the length in 512 byte blocks from the 'Bytes transferred'.
+   Convert that to hexidecimal and use that in the next command.  If it's
+   not an even number of 512 bytes, you have to round up the length.  For
+   instance, for 172032 (decimal) bytes, 172032 / 512 = 1845.  172032 % 512
+   is not zero, so round up to 1846, which is 0x7e6 blocks for length.)
+  mmc write 0x2000000 0x40 <length>
+  tftp 0x2000000 u-boot.itb
+  (Calculate the length again as above.)
+  mmc write 0x2000000 0x4000 <length>
+```
 
 For spi, you will need to boot u-boot on the card somehow then load
 u-boot-spi.img into memory somehow and write it to SPI.  Something
