@@ -53,7 +53,8 @@ like:
 ```
 
 where <size> is the size (in hex) reported by the download.  You can
-also "dd" it to /dev/mtd0 on Linux.
+also "dd" it to /dev/mtdblock0 on Linux.  Don't forget to sync before
+rebooting.
 
 ## Bypassing SPI boot
 
