@@ -1,6 +1,7 @@
-# RockPro64 Firmware
+# RockPro64 ARM SystemReady Firmware
 
-This repository builds firmware for a RockPro 64.
+This repository builds firmware for a RockPro 64 that can be used for
+SystemReady OSes.
 
 ## Building
 
