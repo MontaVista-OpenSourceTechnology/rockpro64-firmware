@@ -5,9 +5,10 @@ SystemReady OSes.
 
 ## Building
 
-To build it, you will need to install an aarch64 compiler, probably in
-a package named "gcc-aarch64-linux-gnu". Then check out this repository
-and "cd" do it.  Then do:
+To build it, you will need to install an aarch64 and arm compiler,
+probably in packages named "gcc-aarch64-linux-gnu" and
+"gcc-arm-none-eabi". You will also need "python3-setuptools".  Then
+check out this repository and "cd" do it.  Then do:
 
 ```
 git submodule init
@@ -25,6 +26,14 @@ files:
 
 The makefile will spit out instruction on how to burn it at the end of
 the run.
+
+## Baud Rate
+
+The standard baud rate for these boards is 1500000 baud, for some
+strange reason.  The default baud rate for an ARM systemready image is
+115200.  So there are patches here to adjust the baud rate to 115200.
+If you are following the instructions elsewhere, be sure to account
+for this.
 
 ## Installing
 
@@ -81,6 +90,17 @@ like:
 where <size> is the size (in hex) reported by the download.  You can
 also "dd" it to /dev/mtdblock0 on Linux.  Don't forget to sync before
 rebooting.
+
+## Upgrading
+
+If you upgrade from an older version of this, in u-boot you may need
+to run:
+
+```
+  env default -a
+  env save
+```
+and the reset.  The older environment will not work.
 
 ## Bypassing SPI boot
 

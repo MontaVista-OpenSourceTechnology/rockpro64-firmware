@@ -1,0 +1,13 @@
+diff --git a/arch/arm/dts/rk3399-rockpro64.dtsi b/arch/arm/dts/rk3399-rockpro64.dtsi
+index 6bff8db7d3..6cde7a4d10 100644
+--- a/arch/arm/dts/rk3399-rockpro64.dtsi
++++ b/arch/arm/dts/rk3399-rockpro64.dtsi
+@@ -17,7 +17,7 @@
+ 	};
+ 
+ 	chosen {
+-		stdout-path = "serial2:1500000n8";
++		stdout-path = "serial2:115200n8";
+ 	};
+ 
+ 	clkin_gmac: external-gmac-clock {

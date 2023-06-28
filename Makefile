@@ -53,6 +53,7 @@ arm-tf-clean:
 # u-boot
 ################################################################################
 
+U-BOOT_PATCHES = u-boot-rockpro64-115200baud.patch
 U-BOOT_PATH = $(ROOT)/u-boot
 U-BOOT_BUILD ?= $(U-BOOT_PATH)/build
 
@@ -65,7 +66,13 @@ U-BOOT_EXPORTS ?= \
         BL31=${TF_A_OUT}/bl31/bl31.elf \
         ARCH=arm64
 
-u-boot: arm-tf
+u-boot-patches-applied:
+	for i in $(U-BOOT_PATCHES); do \
+		(cd $(U-BOOT_PATH); patch -p1 <../$$i); \
+	done
+	touch u-boot-patches-applied
+
+u-boot: arm-tf u-boot-patches-applied
 	if test ! -e $(U-BOOT_BUILD); then mkdir $(U-BOOT_BUILD); fi
 	if test ! -e $(U-BOOT_BUILD)/.config; then \
 	  cd $(U-BOOT_PATH) && \
@@ -76,6 +83,8 @@ u-boot: arm-tf
 
 u-boot-clean:
 	rm -rf $(U-BOOT_BUILD)
+	(cd $(U-BOOT_PATH); git reset --hard)
+	rm -f u-boot-patches-applied
 
 ################################################################################
 # u-boot
